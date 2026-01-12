@@ -3,153 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>在淡水，練習和你一起生活 The Art of Living Together</title>
+    <title>在淡水，練習和你一起生活 🌅</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-        
-        /* 🎨 視覺定義區 */
         :root {
-            --bg-color: #FDF6E3;      /* 暖奶油背景 */
-            --primary-color: #E58E58; /* 夕陽橘 (主按鈕) */
-            --secondary-color: #5F8575; /* 森林綠 (副標題/點綴) */
-            --text-color: #433431;    /* 深木色文字 */
+            --bg-color: #FDF6E3;
+            --primary-color: #E58E58;
+            --secondary-color: #5F8575;
+            --text-color: #433431;
         }
-
-        body { 
-            font-family: 'Noto Sans TC', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-color);
-        }
-
-        .card { 
-            background: rgba(255, 255, 255, 0.92); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(229, 142, 88, 0.1);
-        }
-
-        .btn-option { 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            border: 2px solid #F1ECE1;
-        }
-
-        .btn-option:hover { 
-            border-color: var(--primary-color); 
-            background-color: #FFF9F2;
-            transform: translateY(-1px);
-        }
-
-        .btn-primary { 
-            background-color: var(--primary-color); 
-            color: white;
-            box-shadow: 0 4px 14px 0 rgba(229, 142, 88, 0.3);
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: #EEE;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-inner {
-            height: 100%;
-            background: var(--secondary-color);
-            transition: width 0.3s ease;
-        }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-color); color: var(--text-color); }
+        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
+        .btn-option { transition: all 0.2s; border: 2px solid #F1ECE1; }
+        .btn-option:hover { border-color: var(--primary-color); background-color: #FFF9F2; }
+        .btn-primary { background-color: var(--primary-color); color: white; transition: transform 0.1s; }
+        .btn-primary:active { transform: scale(0.98); }
+        .progress-bar { height: 6px; background: #EEE; border-radius: 3px; overflow: hidden; }
+        .progress-inner { height: 100%; background: var(--secondary-color); transition: width 0.3s; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
 
-    <div id="app" class="max-w-md w-full card rounded-[2.5rem] shadow-2xl p-10 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#E58E58] to-[#5F8575]"></div>
+    <div id="app" class="max-w-md w-full card rounded-[2.5rem] shadow-2xl p-8 border-t-8 border-[#E58E58]">
         
         <div id="start-screen" class="text-center">
-    <div class="text-5xl mb-6">🏠</div>
-    
-    <h1 class="text-2xl font-bold mb-1 tracking-wider text-[#433431]">在淡水，練習和你一起生活 The Art of Living Together</h1>
-    <h2 class="text-[10px] text-[#5F8575] font-bold mb-6 uppercase tracking-[0.2em]">Our Cohabitation Manifesto</h2>
+            <div class="text-5xl mb-6">🌅</div>
+            <h1 class="text-2xl font-bold mb-1 tracking-wider">在淡水，練習和你一起生活</h1>
+            <h2 class="text-[10px] text-[#5F8575] font-bold mb-8 uppercase tracking-[0.2em]">The Art of Living Together</h2>
 
-    <div class="text-left space-y-4 mb-10">
-        <div class="bg-[#F8F3E9] p-5 rounded-2xl border border-[#EEE] shadow-sm">
-            <h3 class="text-xs font-bold text-[#E58E58] mb-2">✨ 關於這個測驗</h3>
-            <p class="text-xs text-gray-500 leading-relaxed">
-                從我到我們，不只是空間的共享，更是靈魂的磨合。為了讓未來的每一天都像陽光一樣暖心（而不是像淡水的冬天一樣冷），我準備了這個小測驗，讓我們在一起生活前，先對齊彼此的步調。期待有彼此的生活，可以讓我們的日常是一部浪漫的愛情電影。
-            </p>
-        </div>
+            <div class="text-left space-y-4 mb-10">
+                <div class="bg-[#F8F3E9] p-5 rounded-2xl border border-[#EEE]">
+                    <h3 class="text-xs font-bold text-[#E58E58] mb-2">✨ 關於這個測驗</h3>
+                    <p id="welcome-msg" class="text-xs text-gray-500 leading-relaxed">
+                        正在載入內容...
+                    </p>
+                </div>
+                <div class="px-2">
+                    <h3 class="text-xs font-bold text-[#5F8575] mb-2">📝 遊戲規則</h3>
+                    <ul class="text-[11px] text-gray-400 space-y-1 list-none">
+                        <li>▸ 誠實作答，這裡只有「我們的答案」。</li>
+                        <li>▸ 妳完成後會獲得專屬連結，傳給男友。</li>
+                        <li>▸ 兩人都完成時，自動解鎖默契報告。</li>
+                    </ul>
+                </div>
+            </div>
 
-        <div class="px-2">
-            <h3 class="text-xs font-bold text-[#5F8575] mb-3 flex items-center">
-                <span class="mr-2">📝</span> 答題規則
-            </h3>
-            <ul class="text-[11px] text-gray-400 space-y-2 list-none">
-                <li class="flex items-start"><span class="mr-2">▸</span> 誠實作答，這裡沒有正確答案，只有「我們的答案」。</li>
-                <li class="flex items-start"><span class="mr-2">▸</span> 完成後會獲得專屬連結，傳給另一半接著完成。</li>
-                <li class="flex items-start"><span class="mr-2">▸</span> 當兩人都完成時，系統會自動解鎖「默契報告」。</li>
-            </ul>
-        </div>
-
-        <div class="text-center italic text-[10px] text-gray-300">
-            "Better together, and even better when we're on the same page."
-        </div>
-    </div>
-
-    <div id="welcome-msg" class="hidden"></div> 
-
-    <button onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg transition-transform active:scale-95">
-        開始作答
-    </button>
-</div>
+            <button id="main-start-btn" onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg">
+                開始作答
             </button>
         </div>
 
         <div id="quiz-screen" class="hidden">
             <div class="mb-6">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-400 mb-2 tracking-tighter">
+                <div class="flex justify-between items-center text-[10px] font-bold text-gray-400 mb-2">
                     <span id="progress-text">QUESTION 1 / 10</span>
-                    <span class="text-[#5F8575]">ALMOST THERE!</span>
                 </div>
                 <div class="progress-bar"><div id="progress-inner" class="progress-inner" style="width: 10%"></div></div>
             </div>
-            
-            <h2 id="question-text" class="text-xl font-bold mb-8 text-gray-800 leading-snug text-center">題目載入中...</h2>
-            
+            <h2 id="question-text" class="text-xl font-bold mb-8 text-center">題目載入中...</h2>
             <div id="options" class="space-y-3"></div>
         </div>
 
         <div id="share-screen" class="hidden text-center">
             <div class="text-5xl mb-6">✉️</div>
-            <h2 class="text-2xl font-bold mb-4">你的部分已完成！</h2>
-            <p class="text-gray-500 mb-8 text-sm leading-relaxed">我們已經把妳的答案封印在網址裡了。<br>請點擊下方按鈕複製連結，傳給對方作答。</p>
-            <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold shadow-lg">
+            <h2 class="text-2xl font-bold mb-4">妳的部分已完成！</h2>
+            <p class="text-gray-500 mb-8 text-sm">請複製下方連結傳給男友，<br>當他完成後就能看到默契報告囉！</p>
+            <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold">
                 複製連結傳給他
             </button>
-            <p class="mt-4 text-[10px] text-gray-400">當他完成後，你們就能看到彼此的默契報告</p>
+            <input id="share-url-hidden" type="text" class="absolute -top-full left-0 opacity-0">
         </div>
 
-        <div id="result-screen" class="hidden">
-            <h2 class="text-2xl font-bold text-center mb-2">📊 默契報告書</h2>
-            <p class="text-center text-xs text-gray-400 mb-8 font-bold uppercase tracking-widest">The Results of Alignment</p>
-            
-            <div id="result-list" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar"></div>
-            
-            <div class="mt-10 pt-6 border-t border-dashed border-gray-200 text-center">
-                <p class="text-sm italic text-gray-500 mb-4">"Home is where we grow together."</p>
-                <button onclick="location.href=window.location.pathname" class="text-xs text-gray-300 underline uppercase tracking-widest">Restart Quiz</button>
-            </div>
+        <div id="result-screen" class="hidden text-center">
+            <h2 class="text-2xl font-bold mb-2">📊 默契報告書</h2>
+            <p class="text-xs text-gray-400 mb-8 font-bold uppercase tracking-widest">Alignment Results</p>
+            <div id="result-list" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 text-left"></div>
+            <button onclick="location.href=window.location.pathname" class="mt-8 text-xs text-gray-300 underline">重新開始</button>
         </div>
     </div>
 
     <script>
-        // ✍️ 這裡改題目與選項
         const questions = [
-            { q: "關於「淡水冬天」，除濕機的策略是？", options: ["24小時強力除濕，我要乾燥的人生", "人在家才開，省電為上", "感覺發霉才開", "我不怕濕，我怕乾"] },
-            { q: "房租與日常公費，我們怎麼分？", options: ["絕對公平 50/50", "依薪水比例(賺多出多)", "我付房租，你付雜支", "設一個共同錢包，大家存錢進去"] },
-            { q: "洗碗這件事，妳/你的底線是？", options: ["吃完馬上洗，水槽必須淨空", "睡覺前洗完就好", "隔天早上再說吧", "積滿一整桶再一起處理"] },
-            { q: "如果有「不速之客」(如朋友)想來過夜？", options: ["提前24小時告知是基本尊重", "隨時歡迎，我家就是你家", "僅限週末，頻率不能太高", "抱歉，家是我的私人禁地"] },
-            { q: "關於「垃圾車」與「資源回收」？", options: ["誰有空就誰去倒", "規定好誰負責倒垃圾、誰負責回收", "不愛倒垃圾的人，請負責洗廁所", "直接買高級廚餘機，減少倒垃圾次數"] },
-            { q: "吵架之後，我們的和解機制？", options: ["當天必須講清楚，不帶情緒睡覺", "給我空間冷靜，明天再談", "什麼都不用說，給我一個擁抱", "買宵夜當作和平條約"] },
-            { q: "週末的早晨，我們通常會？", options: ["一起早起吃早餐，開啟健康生活", "各睡各的，睡飽再說", "一個人早起打電動/滑手機，互不干擾", "必須黏在一起賴床"] },
-            { q: "家裡的「生活備品」(衛生紙等)誰來補？", options: ["我比較細心，我來監控", "誰剛好用完最後一個就誰買", "每個月固定去大賣場大採購", "設一個共享清單App，誰有空誰去買"] },
-            { q: "同居後的「浪漫儀式感」？", options: ["每週選一天 Date Night", "每天睡前都要聊天10分鐘", "節日一定要送禮物/慶祝", "生活就是儀式，平淡才是真"] },
-            { q: "如果我想「一個人靜靜
+            { q: "關於「淡水冬天」，除濕機的策略是？", options: ["24小時強力除濕", "人在家才開", "感覺發霉才開", "我不怕濕"] },
+            { q: "房租與日常公費，我們怎麼分？", options: ["絕對公平 50/50", "依薪水比例", "我付房租，你付雜支", "共同錢包公積金"] },
+            { q: "洗碗這件事，妳/你的底線是？", options: ["吃完馬上洗", "睡覺前洗完", "隔天早上再說", "積滿一整桶再說"] },
+            { q: "如果有朋友想來家裡過夜？", options: ["提早24小時告知", "隨時歡迎", "僅限週末", "儘量不要"] },
+            { q: "關於「垃圾車」與「資源回收」？", options: ["誰有空就誰去", "規定好各自負責", "不倒垃圾的人洗廁所", "買廚餘機解決"] },
+            { q: "吵架之後，我們的和解機制？", options: ["當天必須講清楚", "給我空間冷靜", "給我一個擁抱", "買宵夜當條約"] },
+            { q: "週末的早晨，我們通常會？", options: ["一起早起吃早餐", "各睡各的", "互不干擾", "必須黏在一起賴床"] },
+            { q: "家裡的「生活備品」誰來補？", options: ["我來監控", "誰用完最後一個誰買", "每月固定大採購", "設共享清單 App"] },
+            { q: "同居後的「浪漫儀式感」？", options: ["每週選一天 Date Night", "每天睡前聊天", "節日一定要慶祝", "生活平淡就是真"] },
+            { q: "如果我想「一個人靜靜」？", options: ["直接說出口", "戴上耳機是護盾", "躲進特定房間", "我不需要獨處"] }
+        ];
+
+        let partnerAnswers = null;
+        let myAnswers = [];
+        let currentQ =
