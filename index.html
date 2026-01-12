@@ -26,7 +26,7 @@
             <h1 class="text-2xl font-bold mb-1 tracking-wider">在淡水，練習和你一起生活</h1>
             <h2 class="text-[10px] text-[#5F8575] font-bold mb-8 uppercase tracking-[0.2em]">Our Cohabitation Manifesto</h2>
             <div class="bg-[#F8F3E9] p-5 rounded-2xl border border-[#EEE] text-left text-xs text-gray-500 leading-relaxed mb-8">
-                同居不只是空間的共享，更是生活習慣的交會。為了讓未來的每一天都像淡水的夕陽一樣暖心，而不是像冬雨那樣冷冰冰，我準備了這份小測驗。這是一場溫柔的對齊練習。除了選擇題，期待你也可以分享更多心裡的真實想法。完成後截圖或儲存，作為我們未來討論的備忘錄。
+                嘿，我們要一起在淡水展開新生活了。為了讓未來的每一天都像淡水的夕陽一樣暖心，而不是像冬雨那樣冷冰冰，我準備了這份小問卷。這不是考試，也沒有標準答案。這是一場關於「我們」的對話，讓我們在正式一起生活前，溫柔地對齊彼此的步調❤️ 除了選擇題，期待你也可以分享更多心裡的真實想法。完成後截圖或儲存，作為我們未來討論的備忘錄。
             </div>
             <button onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg shadow-lg">開始對齊計畫</button>
         </div>
@@ -155,16 +155,21 @@
         placeholder: "例如：多久前提出 or 不希望朋友留宿" 
     },
 
-    // 🫂 第五部分：衝突解決與情感維護
+    // 🫂 第五部分：衝突解決與日常情感維護
     { 
         q: "吵架時絕對不可以做的事？", 
         type: "input", 
         placeholder: "例如：可以生氣但不能冷暴力、不能摔東西" 
     },
     { 
+        q: "吵架需要冷靜時間嗎？多久？", 
+        options: ["希望馬上講開", "讓我冷靜一下下再聊", "我需要消失一段長時間不要吵我"], 
+        type: "choice" 
+    },
+    { 
         q: "是否同意不帶情緒過夜？", 
         type: "input", 
-        placeholder: "床頭吵床尾和？" 
+        placeholder: "床頭吵床尾和？吵架打一炮就好ＸＤ" 
     },
     { 
         q: "同居後的儀式感，為我們儲存甜蜜金幣", 
@@ -182,7 +187,7 @@
         placeholder: "分享真實的心裡話" 
     },
     { 
-        q: "（成熟題）若未來發現真的不適合（一起住），退場機制是？", 
+        q: "若未來發現真的不適合（一起住），退場機制是？", 
         type: "input", 
         placeholder: "例如：先聊聊、分居一段時間..." 
     }
