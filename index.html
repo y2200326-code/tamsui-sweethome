@@ -3,58 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Home: 同居前的大冒險 🏠</title>
+    <title>Our Home: 同居共識測驗 🏠</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fdf6e3; } /* 暖色調背景 */
-        .card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px); }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fdf6e3; color: #433431; }
+        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .btn-option { transition: all 0.2s; border: 2px solid #f3f4f6; }
+        .btn-option:hover { border-color: #E68B6B; background-color: #fff7ed; }
+        .btn-primary { background-color: #E68B6B; color: white; }
+        .btn-primary:hover { background-color: #d17a5a; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
 
-    <div id="app" class="max-w-md w-full card rounded-3xl shadow-xl p-8 border-t-8 border-orange-300">
-        <div id="start-screen" class="text-center">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">🏠 我們的同居冒險</h1>
-            <p class="text-gray-600 mb-8">在搬進淡水新家前，讓我們來場小小的價值觀對齊吧！</p>
-            <button onclick="startQuiz()" class="bg-orange-400 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-full transition-all">
-                開始測驗
-            </button>
+    <div id="app" class="max-w-md w-full card rounded-3xl shadow-2xl p-8 border-t-8 border-[#E68B6B]">
+        
+        <div id="role-screen" class="text-center">
+            <h1 class="text-3xl font-bold mb-4">🏠 同居共識對齊</h1>
+            <p class="text-gray-500 mb-8 text-sm">搬進新家前，讓我們先了解彼此的想法。<br>請選擇妳/你的身分開始答題：</p>
+            <div class="space-y-4">
+                <button id="btn-girl" onclick="startQuiz('girl')" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg shadow-lg">我是 女友 🙋‍♀️</button>
+                <button id="btn-boy" onclick="startQuiz('boy')" class="w-full py-4 rounded-2xl border-2 border-[#E68B6B] text-[#E68B6B] font-bold text-lg">我是 男友 🙋‍♂️</button>
+            </div>
+            <p id="first-done-msg" class="mt-6 text-sm text-green-600 font-bold hidden">✅ 第一位已完成！請另一位開始。</p>
         </div>
 
         <div id="quiz-screen" class="hidden">
-            <div class="mb-4 flex justify-between items-center text-sm text-gray-400">
-                <span id="progress-text">問題 1 / 5</span>
-                <span id="player-turn" class="bg-orange-100 text-orange-600 px-2 py-1 rounded">輪到：妳</span>
+            <div class="mb-4 flex justify-between items-center text-xs text-gray-400">
+                <span id="progress-text">問題 1 / 10</span>
+                <span id="player-tag" class="bg-orange-100 text-[#E68B6B] px-2 py-1 rounded">正在輸入...</span>
             </div>
-            <h2 id="question-text" class="text-xl font-bold text-gray-800 mb-6">關於房租與水電費...</h2>
-            <div id="options" class="space-y-3">
-                </div>
+            <h2 id="question-text" class="text-xl font-bold mb-6 text-gray-800">題目載入中...</h2>
+            <div id="options" class="space-y-3"></div>
         </div>
 
-        <div id="result-screen" class="hidden text-center">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">📊 我們的契合結果</h2>
-            <div id="result-list" class="text-left space-y-4 mb-8"></div>
-            <button onclick="location.reload()" class="text-orange-500 underline">重新挑戰</button>
+        <div id="result-screen" class="hidden">
+            <h2 class="text-2xl font-bold text-center mb-6">📊 我們的共識報告</h2>
+            <div id="result-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-2"></div>
+            <button onclick="resetAll()" class="w-full mt-8 py-3 text-gray-400 text-sm underline">全部重測</button>
         </div>
     </div>
 
     <script>
+        // 題庫設計：加入淡水與生活細節
         const questions = [
-            { q: "房租水電怎麼分擔？", options: ["對半平分", "按收入比例", "我付房租你付雜費", "先存入公積金"] },
-            { q: "水槽裡的碗可以留多久？", options: ["吃完馬上洗", "睡覺前洗掉", "明天再說啦", "水槽滿了再洗"] },
-            { q: "冷氣通常開幾度？", options: ["26度以上省電", "24度爽爽吹", "不開冷氣派", "隨便你，我穿外套"] },
-            { q: "朋友想來家裡過夜？", options: ["隨時歡迎", "提早一天說", "週末限定", "家是私人領域，母湯"] },
-            { q: "吵架之後怎麼辦？", options: ["一定要當天講清楚", "給我空間冷靜一下", "抱抱就沒事了", "買宵夜當賠罪"] }
+            { q: "關於房租水電費？", options: ["對半平分", "按收入比例", "我付房租你付雜費", "先存入公積金"] },
+            { q: "家事怎麼分配？", options: ["分工明確(如你洗碗我倒垃圾)", "看誰看不下去誰就做", "週末一起大掃除", "找掃地機器人跟洗碗機解決"] },
+            { q: "淡水冬天天氣冷，除濕機開關？", options: ["24小時全開", "人在家才開", "感覺濕才開", "我不怕濕"] },
+            { q: "水槽裡的碗可以留多久？", options: ["吃完馬上洗", "睡前一定要洗完", "隔天再說", "水槽滿了再說"] },
+            { q: "關於「Me Time」？", options: ["每天都要有固定獨處時間", "想獨處時說一聲就好", "只要在同個空間不說話也行", "沒特別需求，喜歡黏在一起"] },
+            { q: "朋友來家裡過夜？", options: ["隨時歡迎，不用報備", "提早一天說就行", "僅限週末，且不能太頻繁", "家是私人領域，儘量不要"] },
+            { q: "關於睡眠習慣？", options: ["一定要同時上床睡覺", "作息互不干涉", "早起的人要輕手輕腳", "我睡著後什麼都聽不到"] },
+            { q: "吵架之後的處理？", options: ["冷靜一下，隔天再談", "當天一定要講開", "給我抱抱就好，不用講道理", "出門吃頓好吃的當和解"] },
+            { q: "誰負責「記住」家裡沒日用品了？", options: ["女友負責監控", "男友負責監控", "誰看到誰就買", "設一個共享清單App"] },
+            { q: "同居後的「儀式感」？", options: ["每週要有一個約會日", "每天都要一起吃晚餐", "特別節日一定要慶祝", "隨性就好，住在一起就是儀式感"] }
         ];
 
+        let girlAnswers = null;
+        let boyAnswers = null;
+        let currentRole = null;
         let currentQ = 0;
-        let turn = 'A'; // A 是妳, B 是男友
-        let answersA = [];
-        let answersB = [];
+        let tempAnswers = [];
 
-        function startQuiz() {
-            document.getElementById('start-screen').classList.add('hidden');
+        function startQuiz(role) {
+            currentRole = role;
+            currentQ = 0;
+            tempAnswers = [];
+            document.getElementById('role-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
             showQuestion();
         }
@@ -62,55 +78,78 @@
         function showQuestion() {
             const q = questions[currentQ];
             document.getElementById('progress-text').innerText = `問題 ${currentQ + 1} / ${questions.length}`;
-            document.getElementById('player-turn').innerText = `輪到：${turn === 'A' ? '妳' : '男友'}`;
             document.getElementById('question-text').innerText = q.q;
             
             const optionsDiv = document.getElementById('options');
             optionsDiv.innerHTML = '';
             q.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-xl border-2 border-gray-100 hover:border-orange-300 hover:bg-orange-50 transition-all";
+                btn.className = "w-full text-left p-4 rounded-xl btn-option";
                 btn.innerText = opt;
-                btn.onclick = () => handleSelect(index);
+                btn.onclick = () => selectOption(index);
                 optionsDiv.appendChild(btn);
             });
         }
 
-        function handleSelect(index) {
-            if (turn === 'A') {
-                answersA.push(index);
-                turn = 'B';
+        function selectOption(index) {
+            tempAnswers.push(index);
+            if (currentQ < questions.length - 1) {
+                currentQ++;
                 showQuestion();
             } else {
-                answersB.push(index);
-                turn = 'A';
-                if (currentQ < questions.length - 1) {
-                    currentQ++;
-                    showQuestion();
-                } else {
-                    showResult();
-                }
+                finishRoleQuiz();
+            }
+        }
+
+        function finishRoleQuiz() {
+            if (currentRole === 'girl') {
+                girlAnswers = tempAnswers;
+                document.getElementById('btn-girl').classList.add('opacity-50', 'pointer-events-none');
+                document.getElementById('btn-girl').innerText = '女友已完成 ✅';
+            } else {
+                boyAnswers = tempAnswers;
+                document.getElementById('btn-boy').classList.add('opacity-50', 'pointer-events-none');
+                document.getElementById('btn-boy').innerText = '男友已完成 ✅';
+            }
+
+            // 判斷是否兩人都寫完
+            if (girlAnswers && boyAnswers) {
+                showResult();
+            } else {
+                document.getElementById('quiz-screen').classList.add('hidden');
+                document.getElementById('role-screen').classList.remove('hidden');
+                document.getElementById('first-done-msg').classList.remove('hidden');
             }
         }
 
         function showResult() {
+            document.getElementById('role-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
+            
             const resultList = document.getElementById('result-list');
+            resultList.innerHTML = '';
             
             questions.forEach((q, i) => {
-                const match = answersA[i] === answersB[i];
+                const match = girlAnswers[i] === boyAnswers[i];
                 const item = document.createElement('div');
-                item.className = `p-4 rounded-lg ${match ? 'bg-green-50 border-l-4 border-green-400' : 'bg-red-50 border-l-4 border-red-400'}`;
+                item.className = `p-4 rounded-2xl border ${match ? 'border-green-200 bg-green-50' : 'border-red-100 bg-red-50'}`;
                 item.innerHTML = `
-                    <p class="font-bold text-gray-700">${q.q}</p>
-                    <p class="text-sm ${match ? 'text-green-600' : 'text-red-600'}">
-                        ${match ? '✅ 默契滿分！' : '⚠️ 需要聊聊喔～'}<br>
-                        <span class="text-gray-500">妳選：${q.options[answersA[i]]} / 他選：${q.options[answersB[i]]}</span>
-                    </p>
+                    <p class="font-bold text-sm mb-1">${i+1}. ${q.q}</p>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">👧：${q.options[girlAnswers[i]]}</span>
+                        <span class="text-gray-500">👦：${q.options[boyAnswers[i]]}</span>
+                    </div>
+                    <div class="mt-2 text-xs font-bold ${match ? 'text-green-600' : 'text-red-500'}">
+                        ${match ? '✨ 充滿默契！' : '📢 建議找時間聊聊這題'}
+                    </div>
                 `;
                 resultList.appendChild(item);
             });
+        }
+
+        function resetAll() {
+            location.reload();
         }
     </script>
 </body>
