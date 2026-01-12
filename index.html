@@ -5,25 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在淡水，練習和你一起生活 🌅</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-        :root {
-            --bg-color: #FDF6E3;
-            --primary-color: #E58E58;
-            --secondary-color: #5F8575;
-            --text-color: #433431;
-        }
+        :root { --bg-color: #FDF6E3; --primary-color: #E58E58; --secondary-color: #5F8575; --text-color: #433431; }
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-color); color: var(--text-color); }
-        .card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); }
+        .card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); }
         .btn-option { transition: all 0.2s; border: 2px solid #F1ECE1; }
         .btn-option:hover { border-color: var(--primary-color); background-color: #FFF9F2; }
-        .btn-primary { background-color: var(--primary-color); color: white; transition: all 0.2s; }
-        .btn-primary:active { transform: scale(0.98); }
-        .progress-bar { height: 6px; background: #EEE; border-radius: 3px; overflow: hidden; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
         .progress-inner { height: 100%; background: var(--secondary-color); transition: width 0.3s; }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6">
+<body class="min-h-screen flex items-center justify-center p-4">
 
     <div id="app" class="max-w-md w-full card rounded-[2.5rem] shadow-2xl p-8 border-t-8 border-[#E58E58]">
         
@@ -31,75 +25,65 @@
             <div class="text-5xl mb-6">🌅</div>
             <h1 class="text-2xl font-bold mb-1 tracking-wider">在淡水，練習和你一起生活</h1>
             <h2 class="text-[10px] text-[#5F8575] font-bold mb-8 uppercase tracking-[0.2em]">Our Cohabitation Manifesto</h2>
-
-            <div class="text-left space-y-4 mb-10">
-                <div class="bg-[#F8F3E9] p-6 rounded-2xl border border-[#EEE] shadow-sm">
-                    <h3 class="text-xs font-bold text-[#E58E58] mb-3 flex items-center">
-                        <span>✨ About this Journey</span>
-                    </h3>
-                    <div id="welcome-msg" class="text-xs text-gray-500 leading-relaxed space-y-3">
-                        <p>嘿，我們要一起在淡水展開新生活了。🏠</p>
-                        <p>同居不只是空間的共享，更是生活習慣的交會。為了讓未來的每一天都像淡水的夕陽一樣暖心，而不是像冬雨那樣冷冰冰，我準備了這份小測驗。</p>
-                        <p>這不是考試，也沒有標準答案。這是一場關於「我們」的對話，讓我們在搬進去前，溫柔地對齊彼此的步調。❤️</p>
-                    </div>
-                </div>
-
-                <div class="px-2">
-                    <h3 class="text-[11px] font-bold text-[#5F8575] mb-2">📜 遊戲規則說明</h3>
-                    <ul class="text-[11px] text-gray-400 space-y-2 list-none">
-                        <li class="flex items-start"><span class="mr-2">▸</span> 誠實作答，這裡沒有正確答案，只有我們的共識。</li>
-                        <li class="flex items-start"><span class="mr-2">▸</span> 完成後，系統會生成專屬連結，請分享給另一半。</li>
-                        <li class="flex items-start"><span class="mr-2">▸</span> 兩人都完成時，我們就能看到這份珍貴的默契報告。</li>
-                    </ul>
-                </div>
+            <div class="bg-[#F8F3E9] p-5 rounded-2xl border border-[#EEE] text-left text-xs text-gray-500 leading-relaxed mb-8">
+                這是一場溫柔的對齊練習。除了選擇題，妳也可以在空格處填寫心裡的真實想法。完成後截圖或儲存，作為我們未來討論的備忘錄。
             </div>
-
-            <button id="main-start-btn" onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg shadow-lg">
-                開啟對齊計畫
-            </button>
+            <button onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg shadow-lg">開始對齊計畫</button>
         </div>
 
         <div id="quiz-screen" class="hidden">
-            <div class="mb-6">
-                <div class="flex justify-between items-center text-[10px] font-bold text-gray-400 mb-2">
-                    <span id="progress-text">QUESTION 1 / 10</span>
+            <div class="mb-6 text-center">
+                <div id="progress-text" class="text-[10px] font-bold text-gray-400 mb-2 uppercase">QUESTION 1</div>
+                <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div id="progress-inner" class="progress-inner" style="width: 10%"></div>
                 </div>
-                <div class="progress-bar"><div id="progress-inner" class="progress-inner" style="width: 10%"></div></div>
             </div>
-            <h2 id="question-text" class="text-lg font-bold mb-8 text-center leading-snug">題目載入中...</h2>
+            <h2 id="question-text" class="text-lg font-bold mb-8 text-center leading-snug text-gray-800">題目載入中...</h2>
+            
             <div id="options" class="space-y-3"></div>
+            
+            <div id="custom-input-area" class="mt-4 hidden">
+                <input id="custom-text" type="text" placeholder="輸入妳的想法..." class="w-full p-4 border-2 border-dashed border-gray-200 rounded-xl text-sm focus:border-[#E58E58] outline-none">
+                <button onclick="handleCustomSubmit()" class="w-full mt-3 py-3 bg-[#5F8575] text-white rounded-xl font-bold text-sm">確認這題</button>
+            </div>
         </div>
 
         <div id="share-screen" class="hidden text-center">
             <div class="text-5xl mb-6">✉️</div>
             <h2 class="text-2xl font-bold mb-4">妳的部分已完成！</h2>
-            <p class="text-gray-500 mb-8 text-sm leading-relaxed">我已經把妳的想法打包好了。<br>請點擊下方按鈕複製連結傳給男友，<br>當他寫完，你們就能看到彼此的默契報告囉！</p>
-            <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold shadow-lg">
-                複製連結傳給他
-            </button>
+            <p class="text-gray-500 mb-8 text-sm leading-relaxed">請複製連結傳給男友，<br>當他寫完，你們就能看到彼此的默契報告。</p>
+            <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold shadow-lg">複製連結傳給他</button>
             <input id="share-url-hidden" type="text" class="absolute -top-full left-0 opacity-0">
         </div>
 
-        <div id="result-screen" class="hidden text-center">
-            <h2 class="text-2xl font-bold mb-2">📊 默契報告書</h2>
-            <p class="text-[10px] text-gray-400 mb-8 font-bold uppercase tracking-widest">The Results of Alignment</p>
-            <div id="result-list" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 text-left"></div>
-            <button onclick="location.href=window.location.pathname" class="mt-8 text-[10px] text-gray-300 underline uppercase">Restart Quiz</button>
+        <div id="result-screen" class="hidden">
+            <div id="capture-area" class="bg-white p-4 rounded-2xl">
+                <div class="text-center mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">我們的生活共識報告</h2>
+                    <p class="text-[9px] text-[#5F8575] uppercase tracking-widest mt-1">CreatedAt: 2026 / Danshui New Home</p>
+                </div>
+                <div id="result-list" class="space-y-4 max-h-[50vh] overflow-y-auto pr-1"></div>
+            </div>
+            
+            <div class="mt-8 space-y-3">
+                <button onclick="downloadImage()" class="w-full py-4 bg-[#5F8575] text-white rounded-2xl font-bold shadow-md flex items-center justify-center">
+                    <span class="mr-2">📸</span> 儲存結果圖
+                </button>
+                <button onclick="location.href=window.location.pathname" class="w-full py-2 text-[10px] text-gray-300 underline uppercase tracking-widest">Restart</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // ✍️ 題型：type 可設為 'choice' (選擇) 或 'input' (填空)
         const questions = [
-            { q: "關於「淡水冬天」，除濕機的策略是？", options: ["24小時強力除濕，我要乾燥的人生", "人在家才開，省電為上", "感覺發霉才開", "我不怕濕，我怕乾"] },
-            { q: "房租與日常公費，我們怎麼分？", options: ["絕對公平 50/50", "依薪水比例 (賺多出多)", "我付房租，你付雜支", "設共同錢包公積金"] },
-            { q: "洗碗這件事，妳/你的底線是？", options: ["吃完馬上洗，水槽必須淨空", "睡覺前洗完就好", "隔天早上再說吧", "積滿一整桶再一起處理"] },
-            { q: "如果有朋友想來家裡過夜？", options: ["提前24小時告知是基本尊重", "隨時歡迎，我家就是你家", "僅限週末，頻率不能太高", "家是私人禁地，儘量不要"] },
-            { q: "關於「垃圾車」與「資源回收」？", options: ["誰有空就誰去倒", "規定好各自負責的項目", "不愛倒垃圾的人，請負責洗廁所", "直接買高級廚餘機解決"] },
-            { q: "吵架之後，我們的和解機制？", options: ["當天必須講清楚，不帶情緒睡覺", "給我空間冷靜，明天再談", "什麼都不用說，給我一個擁抱", "買宵夜當作和平條約"] },
-            { q: "週末的早晨，我們通常會？", options: ["一起早起吃早餐，開啟健康生活", "各睡各的，睡飽再說", "一個人早起打電動/滑手機", "必須黏在一起賴床"] },
-            { q: "家裡的「生活備品」誰來補？", options: ["我比較細心，我來監控", "誰用完最後一個就誰買", "每個月固定去大賣場大採購", "設共享清單 App，誰有空誰買"] },
-            { q: "同居後的「浪漫儀式感」？", options: ["每週選一天 Date Night", "每天睡前都要聊天 10 分鐘", "節日一定要送禮物/慶祝", "生活就是儀式，平淡才是真"] },
-            { q: "如果我想「一個人靜靜」？", options: ["直接說出口，對方必須理解", "戴上耳機就是我的隱形護盾", "我會躲進廁所或書房", "我不需要獨處，我要跟你黏在一起"] }
+            { q: "關於「淡水冬天」，除濕機的策略是？", options: ["24小時強力除濕", "人在家才開", "感覺發霉才開", "我不怕濕"], type: "choice" },
+            { q: "洗碗這件事，妳/你的底線是？", options: ["吃完馬上洗", "睡覺前洗完", "隔天早上再說", "積滿一整桶再說"], type: "choice" },
+            { q: "我們對於「家裡整潔度」的共同期望是？", type: "input", placeholder: "例如：地板不能有頭髮、桌面要淨空..." },
+            { q: "房租與日常公費，我們怎麼分？", options: ["絕對公平 50/50", "依薪水比例", "我付房租你付雜費", "設共同錢包"], type: "choice" },
+            { q: "吵架之後，妳希望怎麼被對待？", type: "input", placeholder: "例如：先讓我安靜十分鐘、直接抱抱我..." },
+            { q: "如果有朋友想來過夜？", options: ["提早24小時告知", "隨時歡迎", "僅限週末", "儘量不要"], type: "choice" },
+            { q: "最想一起在淡水家做的一件事？", type: "input", placeholder: "例如：一起看夕陽、一起煮火鍋..." }
         ];
 
         let partnerAnswers = null;
@@ -109,16 +93,9 @@
         window.onload = () => {
             const urlParams = new URLSearchParams(window.location.search);
             const data = urlParams.get('ans');
-            const welcomeMsg = document.getElementById('welcome-msg');
-            
             if (data) {
-                partnerAnswers = data.split('').map(Number);
-                welcomeMsg.innerHTML = `
-                    <p>嘿，收到另一半傳來的對齊邀請了！❤️</p>
-                    <p>她已經完成作答囉，現在輪到你分享你的想法。這不是要找標準答案，而是為了讓我們未來的淡水生活更順暢。</p>
-                    <p>完成後，你們就能立刻看到彼此的契合報告。開始吧！</p>
-                `;
-                document.getElementById('main-start-btn').innerText = "接受挑戰並作答";
+                // 解碼 Base64 以支援中文
+                partnerAnswers = JSON.parse(decodeURIComponent(escape(window.atob(data))));
             }
         };
 
@@ -136,22 +113,39 @@
             document.getElementById('question-text').innerText = q.q;
             
             const optionsDiv = document.getElementById('options');
+            const inputArea = document.getElementById('custom-input-area');
             optionsDiv.innerHTML = '';
-            q.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 rounded-xl btn-option text-sm leading-relaxed";
-                btn.innerText = opt;
-                btn.onclick = () => {
-                    myAnswers.push(index);
-                    if (currentQ < questions.length - 1) {
-                        currentQ++;
-                        showQuestion();
-                    } else {
-                        finishQuiz();
-                    }
-                };
-                optionsDiv.appendChild(btn);
-            });
+            
+            if (q.type === 'choice') {
+                inputArea.classList.add('hidden');
+                q.options.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = "w-full text-left p-4 rounded-xl btn-option text-sm";
+                    btn.innerText = opt;
+                    btn.onclick = () => saveAnswer(opt);
+                    optionsDiv.appendChild(btn);
+                });
+            } else {
+                inputArea.classList.remove('hidden');
+                document.getElementById('custom-text').value = '';
+                document.getElementById('custom-text').placeholder = q.placeholder;
+            }
+        }
+
+        function handleCustomSubmit() {
+            const val = document.getElementById('custom-text').value.trim();
+            if (!val) return alert("請輸入內容喔～");
+            saveAnswer(val);
+        }
+
+        function saveAnswer(answer) {
+            myAnswers.push(answer);
+            if (currentQ < questions.length - 1) {
+                currentQ++;
+                showQuestion();
+            } else {
+                finishQuiz();
+            }
         }
 
         function finishQuiz() {
@@ -159,7 +153,8 @@
             if (partnerAnswers) {
                 showResult();
             } else {
-                const ansString = myAnswers.join('');
+                // 使用 Base64 編碼支援中文傳輸
+                const ansString = window.btoa(unescape(encodeURIComponent(JSON.stringify(myAnswers))));
                 const shareUrl = window.location.origin + window.location.pathname + '?ans=' + ansString;
                 document.getElementById('share-url-hidden').value = shareUrl;
                 document.getElementById('share-screen').classList.remove('hidden');
@@ -170,31 +165,38 @@
             document.getElementById('result-screen').classList.remove('hidden');
             const resultList = document.getElementById('result-list');
             questions.forEach((q, i) => {
-                const match = myAnswers[i] === partnerAnswers[i];
+                const isMatch = myAnswers[i] === partnerAnswers[i];
                 const item = document.createElement('div');
-                item.className = `p-5 rounded-[1.5rem] border ${match ? 'border-green-100 bg-green-50/50' : 'border-orange-100 bg-orange-50/50'}`;
+                item.className = `p-4 rounded-2xl mb-3 border ${isMatch ? 'border-green-100 bg-green-50' : 'border-orange-100 bg-orange-50'}`;
                 item.innerHTML = `
-                    <p class="font-bold text-xs mb-3 text-gray-700">${i+1}. ${q.q}</p>
-                    <div class="grid grid-cols-2 gap-2 text-[10px]">
-                        <div class="bg-white/80 p-2 rounded-xl">👧：${q.options[myAnswers[i]]}</div>
-                        <div class="bg-white/80 p-2 rounded-xl">👦：${q.options[partnerAnswers[i]]}</div>
+                    <p class="font-bold text-[11px] mb-2 text-gray-700">${i+1}. ${q.q}</p>
+                    <div class="grid grid-cols-2 gap-2 text-[10px] leading-relaxed">
+                        <div class="bg-white/80 p-2 rounded-lg">👧：${myAnswers[i]}</div>
+                        <div class="bg-white/80 p-2 rounded-lg">👦：${partnerAnswers[i]}</div>
                     </div>
                 `;
                 resultList.appendChild(item);
             });
         }
 
+        function downloadImage() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { 
+                backgroundColor: "#FFFFFF",
+                scale: 2 // 提高清晰度
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Our_Home_Manifesto.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
         function copyLink() {
             const copyText = document.getElementById("share-url-hidden");
             copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            try {
-                navigator.clipboard.writeText(copyText.value);
-                alert("連結已複製！快傳給男友吧～ 🏃‍♂️💨");
-            } catch (err) {
-                document.execCommand("copy");
-                alert("連結已複製！");
-            }
+            document.execCommand("copy");
+            alert("連結已複製！傳給男友後，等他也寫完就能看結果囉～");
         }
     </script>
 </body>
