@@ -14,10 +14,10 @@
             --text-color: #433431;
         }
         body { font-family: 'Noto Sans TC', sans-serif; background-color: var(--bg-color); color: var(--text-color); }
-        .card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); }
+        .card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); }
         .btn-option { transition: all 0.2s; border: 2px solid #F1ECE1; }
         .btn-option:hover { border-color: var(--primary-color); background-color: #FFF9F2; }
-        .btn-primary { background-color: var(--primary-color); color: white; transition: transform 0.1s; }
+        .btn-primary { background-color: var(--primary-color); color: white; transition: all 0.2s; }
         .btn-primary:active { transform: scale(0.98); }
         .progress-bar { height: 6px; background: #EEE; border-radius: 3px; overflow: hidden; }
         .progress-inner { height: 100%; background: var(--secondary-color); transition: width 0.3s; }
@@ -30,27 +30,32 @@
         <div id="start-screen" class="text-center">
             <div class="text-5xl mb-6">🌅</div>
             <h1 class="text-2xl font-bold mb-1 tracking-wider">在淡水，練習和你一起生活</h1>
-            <h2 class="text-[10px] text-[#5F8575] font-bold mb-8 uppercase tracking-[0.2em]">The Art of Living Together</h2>
+            <h2 class="text-[10px] text-[#5F8575] font-bold mb-8 uppercase tracking-[0.2em]">Our Cohabitation Manifesto</h2>
 
             <div class="text-left space-y-4 mb-10">
-                <div class="bg-[#F8F3E9] p-5 rounded-2xl border border-[#EEE]">
-                    <h3 class="text-xs font-bold text-[#E58E58] mb-2">✨ 關於這個測驗</h3>
-                    <p id="welcome-msg" class="text-xs text-gray-500 leading-relaxed">
-                        正在載入內容...
-                    </p>
+                <div class="bg-[#F8F3E9] p-6 rounded-2xl border border-[#EEE] shadow-sm">
+                    <h3 class="text-xs font-bold text-[#E58E58] mb-3 flex items-center">
+                        <span>✨ About this Journey</span>
+                    </h3>
+                    <div id="welcome-msg" class="text-xs text-gray-500 leading-relaxed space-y-3">
+                        <p>嘿，我們要一起在淡水展開新生活了。🏠</p>
+                        <p>同居不只是空間的共享，更是生活習慣的交會。為了讓未來的每一天都像淡水的夕陽一樣暖心，而不是像冬雨那樣冷冰冰，我準備了這份小測驗。</p>
+                        <p>這不是考試，也沒有標準答案。這是一場關於「我們」的對話，讓我們在搬進去前，溫柔地對齊彼此的步調。❤️</p>
+                    </div>
                 </div>
+
                 <div class="px-2">
-                    <h3 class="text-xs font-bold text-[#5F8575] mb-2">📝 遊戲規則</h3>
-                    <ul class="text-[11px] text-gray-400 space-y-1 list-none">
-                        <li>▸ 誠實作答，這裡只有「我們的答案」。</li>
-                        <li>▸ 妳完成後會獲得專屬連結，傳給男友。</li>
-                        <li>▸ 兩人都完成時，自動解鎖默契報告。</li>
+                    <h3 class="text-[11px] font-bold text-[#5F8575] mb-2">📜 遊戲規則說明</h3>
+                    <ul class="text-[11px] text-gray-400 space-y-2 list-none">
+                        <li class="flex items-start"><span class="mr-2">▸</span> 誠實作答，這裡沒有正確答案，只有我們的共識。</li>
+                        <li class="flex items-start"><span class="mr-2">▸</span> 完成後，系統會生成專屬連結，請分享給另一半。</li>
+                        <li class="flex items-start"><span class="mr-2">▸</span> 兩人都完成時，我們就能看到這份珍貴的默契報告。</li>
                     </ul>
                 </div>
             </div>
 
-            <button id="main-start-btn" onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg">
-                開始作答
+            <button id="main-start-btn" onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg shadow-lg">
+                開啟對齊計畫
             </button>
         </div>
 
@@ -61,15 +66,15 @@
                 </div>
                 <div class="progress-bar"><div id="progress-inner" class="progress-inner" style="width: 10%"></div></div>
             </div>
-            <h2 id="question-text" class="text-xl font-bold mb-8 text-center">題目載入中...</h2>
+            <h2 id="question-text" class="text-lg font-bold mb-8 text-center leading-snug">題目載入中...</h2>
             <div id="options" class="space-y-3"></div>
         </div>
 
         <div id="share-screen" class="hidden text-center">
             <div class="text-5xl mb-6">✉️</div>
             <h2 class="text-2xl font-bold mb-4">妳的部分已完成！</h2>
-            <p class="text-gray-500 mb-8 text-sm">請複製下方連結傳給男友，<br>當他完成後就能看到默契報告囉！</p>
-            <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold">
+            <p class="text-gray-500 mb-8 text-sm leading-relaxed">我已經把妳的想法打包好了。<br>請點擊下方按鈕複製連結傳給男友，<br>當他寫完，你們就能看到彼此的默契報告囉！</p>
+            <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold shadow-lg">
                 複製連結傳給他
             </button>
             <input id="share-url-hidden" type="text" class="absolute -top-full left-0 opacity-0">
@@ -77,26 +82,120 @@
 
         <div id="result-screen" class="hidden text-center">
             <h2 class="text-2xl font-bold mb-2">📊 默契報告書</h2>
-            <p class="text-xs text-gray-400 mb-8 font-bold uppercase tracking-widest">Alignment Results</p>
+            <p class="text-[10px] text-gray-400 mb-8 font-bold uppercase tracking-widest">The Results of Alignment</p>
             <div id="result-list" class="space-y-4 max-h-[50vh] overflow-y-auto pr-2 text-left"></div>
-            <button onclick="location.href=window.location.pathname" class="mt-8 text-xs text-gray-300 underline">重新開始</button>
+            <button onclick="location.href=window.location.pathname" class="mt-8 text-[10px] text-gray-300 underline uppercase">Restart Quiz</button>
         </div>
     </div>
 
     <script>
         const questions = [
-            { q: "關於「淡水冬天」，除濕機的策略是？", options: ["24小時強力除濕", "人在家才開", "感覺發霉才開", "我不怕濕"] },
-            { q: "房租與日常公費，我們怎麼分？", options: ["絕對公平 50/50", "依薪水比例", "我付房租，你付雜支", "共同錢包公積金"] },
-            { q: "洗碗這件事，妳/你的底線是？", options: ["吃完馬上洗", "睡覺前洗完", "隔天早上再說", "積滿一整桶再說"] },
-            { q: "如果有朋友想來家裡過夜？", options: ["提早24小時告知", "隨時歡迎", "僅限週末", "儘量不要"] },
-            { q: "關於「垃圾車」與「資源回收」？", options: ["誰有空就誰去", "規定好各自負責", "不倒垃圾的人洗廁所", "買廚餘機解決"] },
-            { q: "吵架之後，我們的和解機制？", options: ["當天必須講清楚", "給我空間冷靜", "給我一個擁抱", "買宵夜當條約"] },
-            { q: "週末的早晨，我們通常會？", options: ["一起早起吃早餐", "各睡各的", "互不干擾", "必須黏在一起賴床"] },
-            { q: "家裡的「生活備品」誰來補？", options: ["我來監控", "誰用完最後一個誰買", "每月固定大採購", "設共享清單 App"] },
-            { q: "同居後的「浪漫儀式感」？", options: ["每週選一天 Date Night", "每天睡前聊天", "節日一定要慶祝", "生活平淡就是真"] },
-            { q: "如果我想「一個人靜靜」？", options: ["直接說出口", "戴上耳機是護盾", "躲進特定房間", "我不需要獨處"] }
+            { q: "關於「淡水冬天」，除濕機的策略是？", options: ["24小時強力除濕，我要乾燥的人生", "人在家才開，省電為上", "感覺發霉才開", "我不怕濕，我怕乾"] },
+            { q: "房租與日常公費，我們怎麼分？", options: ["絕對公平 50/50", "依薪水比例 (賺多出多)", "我付房租，你付雜支", "設共同錢包公積金"] },
+            { q: "洗碗這件事，妳/你的底線是？", options: ["吃完馬上洗，水槽必須淨空", "睡覺前洗完就好", "隔天早上再說吧", "積滿一整桶再一起處理"] },
+            { q: "如果有朋友想來家裡過夜？", options: ["提前24小時告知是基本尊重", "隨時歡迎，我家就是你家", "僅限週末，頻率不能太高", "家是私人禁地，儘量不要"] },
+            { q: "關於「垃圾車」與「資源回收」？", options: ["誰有空就誰去倒", "規定好各自負責的項目", "不愛倒垃圾的人，請負責洗廁所", "直接買高級廚餘機解決"] },
+            { q: "吵架之後，我們的和解機制？", options: ["當天必須講清楚，不帶情緒睡覺", "給我空間冷靜，明天再談", "什麼都不用說，給我一個擁抱", "買宵夜當作和平條約"] },
+            { q: "週末的早晨，我們通常會？", options: ["一起早起吃早餐，開啟健康生活", "各睡各的，睡飽再說", "一個人早起打電動/滑手機", "必須黏在一起賴床"] },
+            { q: "家裡的「生活備品」誰來補？", options: ["我比較細心，我來監控", "誰用完最後一個就誰買", "每個月固定去大賣場大採購", "設共享清單 App，誰有空誰買"] },
+            { q: "同居後的「浪漫儀式感」？", options: ["每週選一天 Date Night", "每天睡前都要聊天 10 分鐘", "節日一定要送禮物/慶祝", "生活就是儀式，平淡才是真"] },
+            { q: "如果我想「一個人靜靜」？", options: ["直接說出口，對方必須理解", "戴上耳機就是我的隱形護盾", "我會躲進廁所或書房", "我不需要獨處，我要跟你黏在一起"] }
         ];
 
         let partnerAnswers = null;
         let myAnswers = [];
-        let currentQ =
+        let currentQ = 0;
+
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const data = urlParams.get('ans');
+            const welcomeMsg = document.getElementById('welcome-msg');
+            
+            if (data) {
+                partnerAnswers = data.split('').map(Number);
+                welcomeMsg.innerHTML = `
+                    <p>嘿，收到另一半傳來的對齊邀請了！❤️</p>
+                    <p>她已經完成作答囉，現在輪到你分享你的想法。這不是要找標準答案，而是為了讓我們未來的淡水生活更順暢。</p>
+                    <p>完成後，你們就能立刻看到彼此的契合報告。開始吧！</p>
+                `;
+                document.getElementById('main-start-btn').innerText = "接受挑戰並作答";
+            }
+        };
+
+        function startQuiz() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQ];
+            const progress = ((currentQ + 1) / questions.length) * 100;
+            document.getElementById('progress-text').innerText = `QUESTION ${currentQ + 1} / ${questions.length}`;
+            document.getElementById('progress-inner').style.width = `${progress}%`;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl btn-option text-sm leading-relaxed";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    myAnswers.push(index);
+                    if (currentQ < questions.length - 1) {
+                        currentQ++;
+                        showQuestion();
+                    } else {
+                        finishQuiz();
+                    }
+                };
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function finishQuiz() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            if (partnerAnswers) {
+                showResult();
+            } else {
+                const ansString = myAnswers.join('');
+                const shareUrl = window.location.origin + window.location.pathname + '?ans=' + ansString;
+                document.getElementById('share-url-hidden').value = shareUrl;
+                document.getElementById('share-screen').classList.remove('hidden');
+            }
+        }
+
+        function showResult() {
+            document.getElementById('result-screen').classList.remove('hidden');
+            const resultList = document.getElementById('result-list');
+            questions.forEach((q, i) => {
+                const match = myAnswers[i] === partnerAnswers[i];
+                const item = document.createElement('div');
+                item.className = `p-5 rounded-[1.5rem] border ${match ? 'border-green-100 bg-green-50/50' : 'border-orange-100 bg-orange-50/50'}`;
+                item.innerHTML = `
+                    <p class="font-bold text-xs mb-3 text-gray-700">${i+1}. ${q.q}</p>
+                    <div class="grid grid-cols-2 gap-2 text-[10px]">
+                        <div class="bg-white/80 p-2 rounded-xl">👧：${q.options[myAnswers[i]]}</div>
+                        <div class="bg-white/80 p-2 rounded-xl">👦：${q.options[partnerAnswers[i]]}</div>
+                    </div>
+                `;
+                resultList.appendChild(item);
+            });
+        }
+
+        function copyLink() {
+            const copyText = document.getElementById("share-url-hidden");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            try {
+                navigator.clipboard.writeText(copyText.value);
+                alert("連結已複製！快傳給男友吧～ 🏃‍♂️💨");
+            } catch (err) {
+                document.execCommand("copy");
+                alert("連結已複製！");
+            }
+        }
+    </script>
+</body>
+</html>
