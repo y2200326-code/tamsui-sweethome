@@ -6,6 +6,7 @@
     <title>在淡水，練習和你一起生活 🌅</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
         :root { --bg-color: #FDF6E3; --primary-color: #E58E58; --secondary-color: #5F8575; --text-color: #433431; }
@@ -16,7 +17,6 @@
         .btn-primary { background-color: var(--primary-color); color: white; transition: transform 0.1s; }
         .btn-primary:active { transform: scale(0.98); }
         .progress-inner { height: 100%; background: var(--secondary-color); transition: width 0.3s; }
-        .photo-frame { border: 4px solid #FFF; box-shadow: 0 4px 15px rgba(229, 142, 88, 0.15); }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #E58E58; border-radius: 10px; }
     </style>
@@ -29,15 +29,8 @@
             <h1 class="text-2xl font-bold mb-1 tracking-wider">在淡水，練習和你一起生活</h1>
             <h2 class="text-[10px] text-[#5F8575] font-bold mb-6 uppercase tracking-[0.2em]">Our Cohabitation Manifesto</h2>
 
-            <div id="photo-area" class="relative w-full h-48 mb-6 rounded-2xl overflow-hidden photo-frame">
-                <img src="https://images.unsplash.com/photo-1546868720-271ab0274c2c?auto=format&fit=crop&w=800&q=80" 
-                     alt="我們的合照" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-[#E58E58] opacity-10 mix-blend-overlay"></div>
-            </div>
-
             <div class="bg-[#F8F3E9] p-6 rounded-3xl border border-[#EEE] text-left text-xs text-gray-500 leading-relaxed mb-8 shadow-sm">
-                <div id="welcome-msg" class="space-y-3">
-                    </div>
+                <div id="welcome-msg" class="space-y-3"></div>
             </div>
 
             <button onclick="startQuiz()" class="w-full py-4 rounded-2xl btn-primary font-bold text-lg shadow-lg">開啟對齊計畫</button>
@@ -45,7 +38,7 @@
 
         <div id="quiz-screen" class="hidden text-center">
             <div class="mb-6">
-                <div id="progress-text" class="text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-widest">QUESTION 1 / 23</div>
+                <div id="progress-text" class="text-[9px] font-bold text-gray-400 mb-2 uppercase tracking-widest text-center">QUESTION 1 / 23</div>
                 <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
                     <div id="progress-inner" class="progress-inner" style="width: 5%"></div>
                 </div>
@@ -53,8 +46,7 @@
             <h2 id="question-text" class="text-lg font-bold mb-8 leading-snug text-gray-800">載入中...</h2>
             <div id="options" class="space-y-3"></div>
             <div id="custom-input-area" class="mt-4 hidden text-left">
-                <textarea id="custom-text" rows="4" placeholder="在這裡分享妳/你的想法..." 
-                          class="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl text-sm focus:border-[#E58E58] outline-none resize-none bg-white"></textarea>
+                <textarea id="custom-text" rows="4" placeholder="在這裡分享妳/你的想法..." class="w-full p-4 border-2 border-dashed border-gray-200 rounded-2xl text-sm focus:border-[#E58E58] outline-none resize-none bg-white"></textarea>
                 <button onclick="handleCustomSubmit()" class="w-full mt-4 py-3 bg-[#5F8575] text-white rounded-xl font-bold text-sm">確認這題</button>
             </div>
         </div>
@@ -62,7 +54,7 @@
         <div id="share-screen" class="hidden text-center">
             <div class="text-5xl mb-6">✉️</div>
             <h2 class="text-xl font-bold mb-4">妳的部分已完成！</h2>
-            <p class="text-gray-500 mb-8 text-xs leading-relaxed">我已經把妳的想法封印在網址裡了。<br>請複製連結傳給男友，當他寫完，<br>你們就能解鎖彼此的默契報告囉！</p>
+            <p class="text-gray-500 mb-8 text-xs leading-relaxed">請複製下方連結傳給男友。<br><span class="text-[#E58E58] font-bold">⚠️ 如果連結依然過長，建議使用 TinyURL 縮短後再傳送喔！</span></p>
             <button onclick="copyLink()" class="w-full py-4 btn-primary rounded-2xl font-bold shadow-lg">複製連結傳給他</button>
             <input id="share-url-hidden" type="text" class="absolute -top-full left-0 opacity-0">
         </div>
@@ -75,39 +67,34 @@
                 </div>
                 <div id="result-list" class="space-y-4 max-h-[50vh] overflow-y-auto pr-1 custom-scrollbar"></div>
             </div>
-            <div class="mt-8 space-y-3">
-                <button onclick="downloadImage()" class="w-full py-4 bg-[#5F8575] text-white rounded-2xl font-bold shadow-md flex items-center justify-center">
-                    📸 儲存結果圖
-                </button>
-                <button onclick="location.href=window.location.origin + window.location.pathname" class="w-full py-2 text-[9px] text-gray-300 underline uppercase tracking-widest text-center block">Restart Quiz</button>
-            </div>
+            <button onclick="downloadImage()" class="w-full py-4 mt-8 bg-[#5F8575] text-white rounded-2xl font-bold shadow-md flex items-center justify-center">📸 儲存結果圖</button>
         </div>
     </div>
 
     <script>
         const questions = [
             { q: "對於日常消費，如吃飯/約會誰付錢的想法？", options: ["希望 AA 當日結算", "AB 輪流讓彼此都有被照顧的感覺", "不用分太細，隨性就好"], type: "choice" },
-            { q: "關於共同錢包（採購日用品/買菜等），妳/你的想法是？", options: ["支持！每月各存入固定金額支付公用", "不用特別設帳戶，先付的人再請款", "由其中一人先墊，月底再一次結算", "不用分太細，隨性就好"], type: "choice" },
-            { q: "希望「外食」與「下廚」的開銷分配？", type: "input", placeholder: "例如：下廚用共同基金，外食各付各的或輪流請客..." },
-            { q: "希望家事如何運作？", options: ["每週輪流", "各自認領不排斥的項目", "主動接球：有人做A另一個就做B", "一起做！每週固定家事時間"], type: "choice" },
-            { q: "家事大點名！最不排斥哪幾項？", type: "input", placeholder: "列出願意做的：如洗碗、倒垃圾、掃地、洗廁所..." },
-            { q: "對「雜物亂丟」的容忍度是？", options: ["絕對不行，每天都要收乾淨", "可以放個2-3天，週末再收", "只要不影響走路，我都能忍受", "我是亂丟的那個人"], type: "choice" },
-            { q: "對「地面整潔度」的容忍度是？", options: ["每週吸地", "看到覺得髒就吸", "看不到髒髒沒關係，有空再吸"], type: "choice" },
-            { q: "水槽裡的髒碗盤可以留多久？", options: ["吃完馬上洗，水槽必須保持淨空", "睡覺前洗完就好", "隔天早上再說"], type: "choice" },
+            { q: "關於共同錢包，妳/你的想法是？", options: ["支持！每月各存入固定金額", "不用特別設帳戶，先付的人再請款", "月底一次結算", "不用分太細，隨性就好"], type: "choice" },
+            { q: "希望「外食」與「下廚」的開銷分配？", type: "input", placeholder: "例如：下廚用共同基金，外食輪流請客..." },
+            { q: "希望家事如何運作？", options: ["每週輪流", "各自認領不排斥的項目", "主動接球制", "一起做！每週固定家事時間"], type: "choice" },
+            { q: "家事大點名！最不排斥哪幾項？", type: "input", placeholder: "例如：洗碗、倒垃圾..." },
+            { q: "對「雜物亂丟」的容忍度是？", options: ["絕對不行，每天收", "可以放個2-3天", "不影響走路都能忍", "我是亂丟的那個人"], type: "choice" },
+            { q: "對「地面整潔度」的容忍度是？", options: ["每週吸地", "看到覺得髒就吸", "有空再吸"], type: "choice" },
+            { q: "水槽裡的髒碗盤可以留多久？", options: ["吃完馬上洗", "睡前洗完", "隔天再說"], type: "choice" },
             { q: "關於洗衣服的「細節」習慣？", type: "input", placeholder: "例如：襪子必須分開洗..." },
-            { q: "當作息不一致時（早起vs晚睡），希望對方怎麼做？", type: "input", placeholder: "例如：鬧鐘不要調太多個..." },
-            { q: "當我出現哪些行為時，代表我需要「貓咪時間」不要打擾？", type: "input", placeholder: "例如：戴耳機或直接說我要獨處..." },
-            { q: "雙方都在家工作時，有沒有什麼需求？", type: "input", placeholder: "例如：視訊時要避開、希望專注工作勿擾" },
-            { q: "情緒低落時，希望對方...", options: ["主動發現＆安慰", "沒有自己說代表想自己消化", "希望可以有愛的抱抱"], type: "choice" },
-            { q: "對於共享行事曆你的想法是？", options: ["彼此掌握生活節奏＆安排共同約會", "彈性每週對焦即可", "不用特別知道，以個人規劃為主"], type: "choice" },
-            { q: "朋友想來家裡玩，需要提前多久告知？", options: ["至少一天前，要先討論", "一小時前說一聲就好", "隨時歡迎，不用報備", "家是禁地，儘量不要帶人回來"], type: "choice" },
-            { q: "關於「朋友留宿」的頻率與規定？", type: "input", placeholder: "例如：多久前提出 or 不希望朋友留宿" },
-            { q: "吵架時絕對不可以做的事？", type: "input", placeholder: "例如：可以生氣但不能冷暴力、不能摔東西" },
-            { q: "吵架需要冷靜時間嗎？多久？", options: ["希望馬上講開", "讓我冷靜一下下再聊", "我需要消失一段長時間不要吵我"], type: "choice" },
-            { q: "是否同意不帶情緒過夜？", type: "input", placeholder: "床頭吵床尾和？吵架打一炮就好ＸＤ" },
-            { q: "同居後的儀式感，為我們儲存甜蜜金幣", type: "input", placeholder: "例如：每週約會日、睡前聊聊、每天放下手機吃頓飯" },
-            { q: "你會如何定義一起住？對於接下來的期待", type: "input", placeholder: "分享真實的心裡話" },
-            { q: "你希望這是一個為期多久的同居生活？什麼時候回頭檢視？", type: "input", placeholder: "分享真實的心裡話" },
+            { q: "作息不一致時，希望對方怎麼做？", type: "input", placeholder: "例如：鬧鐘不要調太多個..." },
+            { q: "我需要「貓咪時間」不要打擾的訊號？", type: "input", placeholder: "例如：戴耳機或直接說..." },
+            { q: "雙方都在家工作時的需求？", type: "input", placeholder: "例如：視訊時避開、工作勿擾" },
+            { q: "情緒低落時，希望對方...", options: ["主動發現＆安慰", "想自己消化", "希望有愛的抱抱"], type: "choice" },
+            { q: "對於共享行事曆你的想法是？", options: ["掌控生活節奏", "彈性每週對焦", "以個人規劃為主"], type: "choice" },
+            { q: "朋友想來家裡玩，提前多久告知？", options: ["至少一天前", "一小時前", "隨時歡迎", "儘量不要帶人回來"], type: "choice" },
+            { q: "關於「朋友留宿」的規定？", type: "input", placeholder: "多久前提出 or 不希望留宿" },
+            { q: "吵架時絕對不可以做的事？", type: "input", placeholder: "例如：不能冷暴力、不能摔東西" },
+            { q: "吵架需要冷靜時間嗎？", options: ["希望馬上講開", "冷靜一下下再聊", "需要消失一段時間"], type: "choice" },
+            { q: "是否同意不帶情緒過夜？", type: "input", placeholder: "床頭吵床尾和？" },
+            { q: "同居後的儀式感？", type: "input", placeholder: "例如：約會日、睡前聊天..." },
+            { q: "你會如何定義一起住？對接下來的期待", type: "input", placeholder: "分享真實的心裡話" },
+            { q: "希望為期多久的同居？何時回頭檢視？", type: "input", placeholder: "分享真實的心裡話" },
             { q: "若未來發現真的不適合，退場機制是？", type: "input", placeholder: "例如：先聊聊、分居一段時間..." }
         ];
 
@@ -119,26 +106,16 @@
             const urlParams = new URLSearchParams(window.location.search);
             const data = urlParams.get('ans');
             const msgEl = document.getElementById('welcome-msg');
-            
             if (data) {
                 try {
-                    // 強化 Base64 解碼
-                    partnerAnswers = JSON.parse(decodeURIComponent(escape(window.atob(data))));
-                    msgEl.innerHTML = `
-                        <p>嘿，我們要一起在淡水展開新生活了。🏠</p>
-                        <p>我已經完成這份小問卷囉！這是一場關於「我們」的對話。</p>
-                        <p>期待你也可以分享心裡的真實想法。等你也完成後，我們就能一起看看彼此的步調對齊得如何❤️</p>
-                    `;
-                    document.getElementById('photo-area').classList.add('hidden');
+                    // 使用 LZ-String 解壓
+                    partnerAnswers = JSON.parse(LZString.decompressFromEncodedURIComponent(data));
+                    msgEl.innerHTML = `<p>嘿，對方已經完成測驗囉！換你分享你的想法，讓我們一起看看默契報告❤️</p>`;
                 } catch(e) {
-                    msgEl.innerText = "讀取資料時出錯，請確認連結是否完整複製。";
+                    msgEl.innerText = "網址被截斷了，請另一半用 TinyURL 縮短網址後重新傳送喔！";
                 }
             } else {
-                msgEl.innerHTML = `
-                    <p>嘿，我們要一起在淡水展開新生活了。為了讓未來的每一天都像淡水的夕陽一樣暖心，我準備了這份小問卷。</p>
-                    <p>這不是考試，也沒有標準答案。這是一場關於「我們」的對話，讓我們在正式一起生活前，溫柔地對齊彼此的步調❤️</p>
-                    <p>除了選擇題，期待你也可以分享更多心裡的真實想法。完成後截圖或儲存，作為我們未來討論的備忘錄。</p>
-                `;
+                msgEl.innerHTML = `<p>嘿，我們要一起在淡水展開新生活了。為了讓未來的每一天都像夕陽一樣暖心，我準備了這份小問卷。這不是考試，而是關於我們的練習❤️</p>`;
             }
         };
 
@@ -150,15 +127,12 @@
 
         function showQuestion() {
             const q = questions[currentQ];
-            const progress = ((currentQ + 1) / questions.length) * 100;
             document.getElementById('progress-text').innerText = `QUESTION ${currentQ + 1} / ${questions.length}`;
-            document.getElementById('progress-inner').style.width = `${progress}%`;
+            document.getElementById('progress-inner').style.width = `${((currentQ+1)/questions.length)*100}%`;
             document.getElementById('question-text').innerText = q.q;
-            
             const optionsDiv = document.getElementById('options');
             const inputArea = document.getElementById('custom-input-area');
             optionsDiv.innerHTML = '';
-            
             if (q.type === 'choice') {
                 inputArea.classList.add('hidden');
                 q.options.forEach(opt => {
@@ -177,12 +151,12 @@
 
         function handleCustomSubmit() {
             const val = document.getElementById('custom-text').value.trim();
-            if (!val) return alert("請分享一些想法喔～");
+            if (!val) return alert("分享一點想法嘛～");
             saveAnswer(val);
         }
 
-        function saveAnswer(answer) {
-            myAnswers.push(answer);
+        function saveAnswer(ans) {
+            myAnswers.push(ans);
             if (currentQ < questions.length - 1) {
                 currentQ++;
                 showQuestion();
@@ -196,8 +170,8 @@
             if (partnerAnswers) {
                 showResult();
             } else {
-                // 強化 Base64 編碼
-                const ansString = window.btoa(unescape(encodeURIComponent(JSON.stringify(myAnswers))));
+                // 使用 LZ-String 壓縮
+                const ansString = LZString.compressToEncodedURIComponent(JSON.stringify(myAnswers));
                 const shareUrl = window.location.origin + window.location.pathname + '?ans=' + ansString;
                 document.getElementById('share-url-hidden').value = shareUrl;
                 document.getElementById('share-screen').classList.remove('hidden');
@@ -206,40 +180,36 @@
 
         function showResult() {
             document.getElementById('result-screen').classList.remove('hidden');
-            const resultList = document.getElementById('result-list');
-            resultList.innerHTML = '';
+            const list = document.getElementById('result-list');
+            list.innerHTML = '';
             const len = Math.min(questions.length, partnerAnswers.length, myAnswers.length);
             for(let i=0; i<len; i++) {
                 const match = myAnswers[i] === partnerAnswers[i];
-                const item = document.createElement('div');
-                item.className = `p-4 rounded-[1.5rem] mb-3 border ${match ? 'border-green-100 bg-green-50/50' : 'border-orange-100 bg-orange-50/50'}`;
-                item.innerHTML = `
-                    <p class="font-bold text-[10px] mb-2 text-gray-700 leading-tight">${i+1}. ${questions[i].q}</p>
-                    <div class="grid grid-cols-2 gap-2 text-[9px]">
-                        <div class="bg-white/80 p-2 rounded-xl border border-gray-50 break-words">👧：${myAnswers[i]}</div>
-                        <div class="bg-white/80 p-2 rounded-xl border border-gray-50 break-words">👦：${partnerAnswers[i]}</div>
-                    </div>
-                `;
-                resultList.appendChild(item);
+                list.innerHTML += `
+                    <div class="p-4 rounded-2xl mb-3 border ${match ? 'border-green-100 bg-green-50' : 'border-orange-100 bg-orange-50'}">
+                        <p class="font-bold text-[10px] mb-2 text-gray-700">${i+1}. ${questions[i].q}</p>
+                        <div class="grid grid-cols-2 gap-2 text-[9px]">
+                            <div class="bg-white/80 p-2 rounded-lg break-words">👧：${myAnswers[i]}</div>
+                            <div class="bg-white/80 p-2 rounded-lg break-words">👦：${partnerAnswers[i]}</div>
+                        </div>
+                    </div>`;
             }
         }
 
         function downloadImage() {
-            const area = document.getElementById('capture-area');
-            // 下載前稍微調整樣式確保截圖完整
-            html2canvas(area, { backgroundColor: "#FFFFFF", scale: 2, useCORS: true }).then(canvas => {
+            html2canvas(document.getElementById('capture-area'), { backgroundColor: "#FFFFFF", scale: 2 }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `Our_Danshui_Life_Manifesto.png`;
+                link.download = `Home_Manifesto.png`;
                 link.href = canvas.toDataURL();
                 link.click();
             });
         }
 
         function copyLink() {
-            const copyText = document.getElementById("share-url-hidden");
-            copyText.select();
+            const el = document.getElementById("share-url-hidden");
+            el.select();
             document.execCommand("copy");
-            alert("連結已複製！傳給男友後，等他也寫完就能看結果囉～ 🏃‍♂️💨");
+            alert("連結已複製！如果連結太長導致男友打不開，請先用 TinyURL 縮短網址喔！");
         }
     </script>
 </body>
